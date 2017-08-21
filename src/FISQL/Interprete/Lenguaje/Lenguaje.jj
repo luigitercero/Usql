@@ -1,0 +1,61 @@
+PARSER_BEGIN(ej1)
+import java.io.*;
+class ej1 
+{
+	public static void main( String[] args )throws ParseException, Exception
+	{
+			System.out.println("\tinicaiando.");	
+
+		try
+		{		
+     		ej1 analizador = new ej1( System.in ) ;
+			analizador.S();
+			System.out.println("\tAnalizador ha terminado.");			
+		}
+		catch(ParseException e)
+		{
+			System.out.println(e.getMessage());
+			System.out.println("\tAnalizador ha terminado.");
+		}
+	}
+}
+PARSER_END(ej1)
+
+TOKEN : 
+{ 
+	  <COMA : ",">  
+	| <ENTERO : "int" >  
+	| <CARATER:"char"> 	
+	| <ID : ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9","_"])*>
+}
+
+SKIP : 
+{ 
+	" "|"\n" | "\r" | "\r\n" | "\t"
+}
+
+void S() :
+{}
+{
+	L()<EOF>	
+}
+
+void L() :
+{Token e;}
+{
+	e = <ENTERO>
+	Var(e.image)
+}
+
+void Var(String tipo) :
+{Token id;}
+{
+	id=<ID> 
+	 Var_P(tipo){System.out.println(tipo+" " + id.image+";");}
+}
+
+void Var_P(String tipo) :
+{Token id;}
+{
+	(<COMA> id = <ID> Var_P(tipo){System.out.println(tipo+" " + id.image+";");})?
+}

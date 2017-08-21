@@ -1,2 +1,0 @@
-# Usql
-Primer Dia
