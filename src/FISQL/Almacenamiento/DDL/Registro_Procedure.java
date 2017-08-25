@@ -23,6 +23,7 @@ public class Registro_Procedure extends Archivo {
         try {
             getArchivo();
             System.out.println("Se trabajara con la base de datos " + nombre);
+            
         } catch (Exception e) {
             System.out.println("No se pudo abrir Registro de la base de datos " + nombre);
         }

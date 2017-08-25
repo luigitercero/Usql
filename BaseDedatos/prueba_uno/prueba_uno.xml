@@ -9,3 +9,14 @@
 		<int>edad</int>
 	</rows>
 </tabla>
+<object>
+	<path>BaseDedatos/prueba_uno/Objeto</path>
+</object>
+<tabla>
+	<nombre>hombre</nombre>
+	<path>BaseDedatos/prueba_uno/Tabla</path>
+	<rows>
+		<text>nombre</text>
+		<int>edad</int>
+	</rows>
+</tabla>

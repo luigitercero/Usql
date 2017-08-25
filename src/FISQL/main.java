@@ -8,6 +8,11 @@ package FISQL;
 import FISQL.Almacenamiento.DDL.*;
 import FISQL.Almacenamiento.Encabezado;
 import FISQL.Almacenamiento.Fila;
+import FISQL.Interprete.XML.ParseException;
+import FISQL.Interprete.XML.ej1;
+
+
+import java.io.StringReader;
 
 /**
  *
@@ -18,20 +23,12 @@ public class main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         // TODO code application logic here
-        Registro_Master m = new Registro_Master("Master", "BaseDedatos");
-        m.crearBaseDeDatos("prueba_uno", "BaseDedatos/prueba_uno");
-        Registro_DB db = new Registro_DB("prueba_uno", "BaseDedatos/prueba_uno");
-        db.crearObjeto("objeto1", "BaseDedatos/prueba_uno/Objeto");
-        Encabezado e[] = new Encabezado[2];
-        e[1] = new Encabezado("edad", "int");
-        e[0] = new Encabezado("nombre", "text");
-        db.crearTabla("hombre", e, "BaseDedatos/prueba_uno/Tabla");
-        Registro_Tabla tabla = new Registro_Tabla("hombre", "BaseDedatos/prueba_uno/Tabla");
-        Fila f[] = new  Fila[2];
-        f[0] = new Fila("Luis","nombre");
-        f[1] = new Fila("25","edad");        
-        tabla.crearFila(f);
+        ej1 analizador = new ej1( new StringReader("<db>hola</db>"+
+                "<db><nombre>segunda Base De Datos</nombre> <path>segunda_base_Datos</path></db>")) ;
+        analizador.Inicio().recorrerHijos();
+        System.out.println("\u005ctAnalizador ha terminado.");
+        
     }
 }

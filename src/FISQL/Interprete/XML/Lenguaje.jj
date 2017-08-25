@@ -1,0 +1,142 @@
+
+/*
+ * Copyright © 2002 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
+ * California 95054, U.S.A. All rights reserved.  Sun Microsystems, Inc. has
+ * intellectual property rights relating to technology embodied in the product
+ * that is described in this document. In particular, and without limitation,
+ * these intellectual property rights may include one or more of the U.S.
+ * patents listed at http://www.sun.com/patents and one or more additional
+ * patents or pending patent applications in the U.S. and in other countries.
+ * U.S. Government Rights - Commercial software. Government users are subject
+ * to the Sun Microsystems, Inc. standard license agreement and applicable
+ * provisions of the FAR and its supplements.  Use is subject to license terms.
+ * Sun,  Sun Microsystems,  the Sun logo and  Java are trademarks or registered
+ * trademarks of Sun Microsystems, Inc. in the U.S. and other countries.  This
+ * product is covered and controlled by U.S. Export Control laws and may be
+ * subject to the export or import laws in other countries.  Nuclear, missile,
+ * chemical biological weapons or nuclear maritime end uses or end users,
+ * whether direct or indirect, are strictly prohibited.  Export or reexport
+ * to countries subject to U.S. embargo or to entities identified on U.S.
+ * export exclusion lists, including, but not limited to, the denied persons
+ * and specially designated nationals lists is strictly prohibited.
+ */
+
+
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(ej1)
+package FISQL.Interprete.XML;
+import java.io.*;
+
+public class ej1 
+{
+	public static void main( String[] args )throws ParseException, Exception
+	{
+			System.out.println("\tinicaiando.");	
+
+		try
+		{		
+     		ej1 analizador = new ej1( new StringReader("<db><nombre>primera Base De Datos</nombre> <path>primera_base_Datos</path></db>"+
+"<db><nombre>segunda Base De Datos</nombre> <path>segunda_base_Datos</path></db>")) ;
+			analizador.Inicio().recorrerHijos();
+			System.out.println("\tAnalizador ha terminado.");			
+		}
+		catch(ParseException e)
+		{
+			System.out.println(e.getMessage());
+			System.out.println("\tAnalizador ha terminado.");
+		}
+	}
+}
+PARSER_END(ej1)
+
+
+public Nodo Inicio() :{Nodo padre,hijo;}
+{
+    //Inicio -> cod codp;
+    {padre = new Nodo("inicio");}hijo =cod(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}codp(padre)<EOF>{return padre;}
+}
+
+
+Nodo cod():{String abre,cierra; Nodo hijo;}
+{
+//abre codhtml cierra
+abre = Abre(){hijo = new Nodo(abre);} Codhtml(hijo) cierra = Cierra(){return hijo;}
+}
+
+void codp(Nodo padre):{Nodo hijo;}
+{
+    //codp-> cod codp;
+    hijo = cod(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}codp(padre)
+    |{return;}
+}
+
+
+void Codhtml(Nodo padre):{Nodo hijo;}
+{
+   // Codhtml-> Palabra Codhtmlp.
+    hijo = Palabra(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}Codhtmlp(padre)
+}
+
+void Codhtmlp(Nodo padre):{Nodo hijo;}
+{
+	//Codhtmlp-> Palabra Codhtmlp.
+        //Codhtmlp-> .
+        hijo = Palabra(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}Codhtmlp(padre)
+	|{return;}
+}
+
+Nodo Palabra():{Token token; String dato;Nodo hijo;}
+{
+	//palabra-> id.
+        //palabra-> todo.
+        //palabra-> cod.
+        token = <id>{return new Nodo (token.image,token);}
+        |token = <todo>{return new Nodo (token.image,token);}
+	|token = <num>{return new Nodo (token.image,token);}
+	|hijo = cod(){return hijo;}
+}
+String Abre():{Token Id;}{
+	<abre> Id = <id><cierra>{return Id.image;}
+}
+
+String Cierra():{Token Id;}
+{
+	<slash> Id = <id><cierra>{return Id.image;}
+}
+
+
+
+SKIP : 
+{ 
+	" "|"\n" | "\r" | "\r\n" | "\t"
+}
+TOKEN : 
+{ 
+ <abre :"<">{} 
+|<cierra :">"> {}
+|<slash:"</">{}
+|<id :["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9","_"])*>{} 
+|<todo :(~["<",">"] )+>{}
+|<num:["0"-"9"](["0"-"9"])*>{}
+
+}
+
