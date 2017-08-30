@@ -10,6 +10,12 @@ import FISQL.Almacenamiento.Encabezado;
 import FISQL.Almacenamiento.Fila;
 import FISQL.Interprete.XML.ParseException;
 import FISQL.Interprete.XML.ej1;
+import RegistroUseBD.Rows;
+import RegistroUseBD.Tabla;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 
 import java.io.StringReader;
@@ -23,11 +29,24 @@ public class main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, FileNotFoundException {
         // TODO code application logic here
-        ej1 analizador = new ej1( new StringReader("<db>hola</db>"+
-                "<db><nombre>segunda Base De Datos</nombre> <path>segunda_base_Datos</path></db>")) ;
-        analizador.Inicio().recorrerHijos();
+        
+        
+        BufferedReader bf = new BufferedReader(new FileReader("BaseDedatos/Master.xml"));
+        ej1 analizador = new ej1( bf) ;
+        DBS dbs = new DBS(analizador.Inicio());
+         
+        dbs.useDB("prueba_uno");
+        
+       // System.out.println(dbs.getUseDB().DB.path);
+        
+        for (Tabla tabla : dbs.DB.rTabla) {
+         //   System.out.println(tabla.nombre);
+            for (Rows row : tabla.rows) {
+           //     System.out.println("    "+ row.nombre);
+            }
+        }
         System.out.println("\u005ctAnalizador ha terminado.");
         
     }

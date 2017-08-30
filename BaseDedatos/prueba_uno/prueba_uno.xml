@@ -1,6 +1,12 @@
+
+
 <object>
 	<path>BaseDedatos/prueba_uno/Objeto</path>
 </object>
+
+
+
+
 <tabla>
 	<nombre>hombre</nombre>
 	<path>BaseDedatos/prueba_uno/Tabla</path>
@@ -9,14 +15,14 @@
 		<int>edad</int>
 	</rows>
 </tabla>
-<object>
-	<path>BaseDedatos/prueba_uno/Objeto</path>
-</object>
+
 <tabla>
-	<nombre>hombre</nombre>
+	<nombre>arroz</nombre>
 	<path>BaseDedatos/prueba_uno/Tabla</path>
 	<rows>
-		<text>nombre</text>
-		<int>edad</int>
+		<text>textura</text>
+		<int>cantidad</int>
 	</rows>
 </tabla>
+
+

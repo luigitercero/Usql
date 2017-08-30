@@ -26,7 +26,7 @@ options {
   LOOKAHEAD = 1;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
-  STATIC = true;
+  STATIC = false;
   DEBUG_PARSER = false;
   DEBUG_LOOKAHEAD = false;
   DEBUG_TOKEN_MANAGER = false;
@@ -50,7 +50,7 @@ public class ej1
 {
 	public static void main( String[] args )throws ParseException, Exception
 	{
-			System.out.println("\tinicaiando.");	
+			System.out.println("\tiniciando.");	
 
 		try
 		{		
@@ -72,7 +72,9 @@ PARSER_END(ej1)
 public Nodo Inicio() :{Nodo padre,hijo;}
 {
     //Inicio -> cod codp;
-    {padre = new Nodo("inicio");}hijo =cod(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}codp(padre)<EOF>{return padre;}
+    {padre = new Nodo("inicio");}hijo =cod(){padre.hijo.add(hijo);
+//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+}codp(padre)<EOF>{return padre;}
 }
 
 
@@ -85,7 +87,9 @@ abre = Abre(){hijo = new Nodo(abre);} Codhtml(hijo) cierra = Cierra(){return hij
 void codp(Nodo padre):{Nodo hijo;}
 {
     //codp-> cod codp;
-    hijo = cod(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}codp(padre)
+    hijo = cod(){padre.hijo.add(hijo);
+//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+}codp(padre)
     |{return;}
 }
 
@@ -93,14 +97,17 @@ void codp(Nodo padre):{Nodo hijo;}
 void Codhtml(Nodo padre):{Nodo hijo;}
 {
    // Codhtml-> Palabra Codhtmlp.
-    hijo = Palabra(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}Codhtmlp(padre)
+    hijo = Palabra(){padre.hijo.add(hijo);
+//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+}Codhtmlp(padre)
 }
 
 void Codhtmlp(Nodo padre):{Nodo hijo;}
 {
 	//Codhtmlp-> Palabra Codhtmlp.
         //Codhtmlp-> .
-        hijo = Palabra(){padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);}Codhtmlp(padre)
+        hijo = Palabra(){padre.hijo.add(hijo);//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+}Codhtmlp(padre)
 	|{return;}
 }
 
@@ -113,6 +120,7 @@ Nodo Palabra():{Token token; String dato;Nodo hijo;}
         |token = <todo>{return new Nodo (token.image,token);}
 	|token = <num>{return new Nodo (token.image,token);}
 	|hijo = cod(){return hijo;}
+        |token = <script>{return new Nodo (token.image,token);}
 }
 String Abre():{Token Id;}{
 	<abre> Id = <id><cierra>{return Id.image;}
@@ -124,19 +132,22 @@ String Cierra():{Token Id;}
 }
 
 
-
 SKIP : 
 { 
 	" "|"\n" | "\r" | "\r\n" | "\t"
 }
+
 TOKEN : 
 { 
  <abre :"<">{} 
 |<cierra :">"> {}
 |<slash:"</">{}
 |<id :["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9","_"])*>{} 
-|<todo :(~["<",">"] )+>{}
+|<todo :(~["<",">","\t","\r","\n"])+>{}
 |<num:["0"-"9"](["0"-"9"])*>{}
+|<script :"##"(~["#"] )+"##">{}
+
 
 }
+
 

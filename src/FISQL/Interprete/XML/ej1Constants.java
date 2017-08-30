@@ -22,6 +22,8 @@ public interface ej1Constants {
   int todo = 10;
   /** RegularExpression Id. */
   int num = 11;
+  /** RegularExpression Id. */
+  int script = 12;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -40,6 +42,7 @@ public interface ej1Constants {
     "<id>",
     "<todo>",
     "<num>",
+    "<script>",
   };
 
 }

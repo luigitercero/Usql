@@ -5,7 +5,7 @@ import java.io.*;
 public class ej1 implements ej1Constants {
         public static void main( String[] args )throws ParseException, Exception
         {
-                        System.out.println("\u005ctinicaiando.");
+                        System.out.println("\u005ctiniciando.");
 
                 try
                 {
@@ -21,18 +21,20 @@ public class ej1 implements ej1Constants {
                 }
         }
 
-  static final public Nodo Inicio() throws ParseException {
+  final public Nodo Inicio() throws ParseException {
                        Nodo padre,hijo;
      padre = new Nodo("inicio");
     hijo = cod();
-                                             padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+                                             padre.hijo.add(hijo);
+//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+
     codp(padre);
     jj_consume_token(0);
-                                                                                                                                                           {if (true) return padre;}
+                  {if (true) return padre;}
     throw new Error("Missing return statement in function");
   }
 
-  static final public Nodo cod() throws ParseException {
+  final public Nodo cod() throws ParseException {
             String abre,cierra; Nodo hijo;
     //abre codhtml cierra
     abre = Abre();
@@ -43,13 +45,15 @@ public class ej1 implements ej1Constants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public void codp(Nodo padre) throws ParseException {
+  final public void codp(Nodo padre) throws ParseException {
                        Nodo hijo;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case abre:
       //codp-> cod codp;
           hijo = cod();
-                 padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+                 padre.hijo.add(hijo);
+//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+
       codp(padre);
       break;
     default:
@@ -58,25 +62,29 @@ public class ej1 implements ej1Constants {
     }
   }
 
-  static final public void Codhtml(Nodo padre) throws ParseException {
+  final public void Codhtml(Nodo padre) throws ParseException {
                           Nodo hijo;
     // Codhtml-> Palabra Codhtmlp.
         hijo = Palabra();
-                     padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+                     padre.hijo.add(hijo);
+//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+
     Codhtmlp(padre);
   }
 
-  static final public void Codhtmlp(Nodo padre) throws ParseException {
+  final public void Codhtmlp(Nodo padre) throws ParseException {
                            Nodo hijo;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case abre:
     case id:
     case todo:
     case num:
+    case script:
       //Codhtmlp-> Palabra Codhtmlp.
               //Codhtmlp-> .
               hijo = Palabra();
-                         padre.hijo.add(hijo);System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+                         padre.hijo.add(hijo);//System.out.println("agregar a " + padre.nombre + " -> " + hijo.nombre);
+
       Codhtmlp(padre);
       break;
     default:
@@ -85,7 +93,7 @@ public class ej1 implements ej1Constants {
     }
   }
 
-  static final public Nodo Palabra() throws ParseException {
+  final public Nodo Palabra() throws ParseException {
                 Token token; String dato;Nodo hijo;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case id:
@@ -107,6 +115,10 @@ public class ej1 implements ej1Constants {
       hijo = cod();
                       {if (true) return hijo;}
       break;
+    case script:
+      token = jj_consume_token(script);
+                          {if (true) return new Nodo (token.image,token);}
+      break;
     default:
       jj_la1[2] = jj_gen;
       jj_consume_token(-1);
@@ -115,7 +127,7 @@ public class ej1 implements ej1Constants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public String Abre() throws ParseException {
+  final public String Abre() throws ParseException {
                Token Id;
     jj_consume_token(abre);
     Id = jj_consume_token(id);
@@ -124,7 +136,7 @@ public class ej1 implements ej1Constants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public String Cierra() throws ParseException {
+  final public String Cierra() throws ParseException {
                  Token Id;
     jj_consume_token(slash);
     Id = jj_consume_token(id);
@@ -133,23 +145,22 @@ public class ej1 implements ej1Constants {
     throw new Error("Missing return statement in function");
   }
 
-  static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
-  static public ej1TokenManager token_source;
-  static SimpleCharStream jj_input_stream;
+  public ej1TokenManager token_source;
+  SimpleCharStream jj_input_stream;
   /** Current token. */
-  static public Token token;
+  public Token token;
   /** Next token. */
-  static public Token jj_nt;
-  static private int jj_ntk;
-  static private int jj_gen;
-  static final private int[] jj_la1 = new int[3];
+  public Token jj_nt;
+  private int jj_ntk;
+  private int jj_gen;
+  final private int[] jj_la1 = new int[3];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x40,0xe40,0xe40,};
+      jj_la1_0 = new int[] {0x40,0x1e40,0x1e40,};
    }
 
   /** Constructor with InputStream. */
@@ -158,13 +169,6 @@ public class ej1 implements ej1Constants {
   }
   /** Constructor with InputStream and supplied encoding */
   public ej1(java.io.InputStream stream, String encoding) {
-    if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static parser.  ");
-      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
-      System.out.println("       during parser generation.");
-      throw new Error();
-    }
-    jj_initialized_once = true;
     try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new ej1TokenManager(jj_input_stream);
     token = new Token();
@@ -174,11 +178,11 @@ public class ej1 implements ej1Constants {
   }
 
   /** Reinitialise. */
-  static public void ReInit(java.io.InputStream stream) {
+  public void ReInit(java.io.InputStream stream) {
      ReInit(stream, null);
   }
   /** Reinitialise. */
-  static public void ReInit(java.io.InputStream stream, String encoding) {
+  public void ReInit(java.io.InputStream stream, String encoding) {
     try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
@@ -189,13 +193,6 @@ public class ej1 implements ej1Constants {
 
   /** Constructor. */
   public ej1(java.io.Reader stream) {
-    if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static parser. ");
-      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
-      System.out.println("       during parser generation.");
-      throw new Error();
-    }
-    jj_initialized_once = true;
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new ej1TokenManager(jj_input_stream);
     token = new Token();
@@ -205,7 +202,7 @@ public class ej1 implements ej1Constants {
   }
 
   /** Reinitialise. */
-  static public void ReInit(java.io.Reader stream) {
+  public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
     token = new Token();
@@ -216,13 +213,6 @@ public class ej1 implements ej1Constants {
 
   /** Constructor with generated Token Manager. */
   public ej1(ej1TokenManager tm) {
-    if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static parser. ");
-      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
-      System.out.println("       during parser generation.");
-      throw new Error();
-    }
-    jj_initialized_once = true;
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
@@ -239,7 +229,7 @@ public class ej1 implements ej1Constants {
     for (int i = 0; i < 3; i++) jj_la1[i] = -1;
   }
 
-  static private Token jj_consume_token(int kind) throws ParseException {
+  private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;
     if ((oldToken = token).next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -255,7 +245,7 @@ public class ej1 implements ej1Constants {
 
 
 /** Get the next Token. */
-  static final public Token getNextToken() {
+  final public Token getNextToken() {
     if (token.next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
@@ -264,7 +254,7 @@ public class ej1 implements ej1Constants {
   }
 
 /** Get the specific Token. */
-  static final public Token getToken(int index) {
+  final public Token getToken(int index) {
     Token t = token;
     for (int i = 0; i < index; i++) {
       if (t.next != null) t = t.next;
@@ -273,21 +263,21 @@ public class ej1 implements ej1Constants {
     return t;
   }
 
-  static private int jj_ntk() {
+  private int jj_ntk() {
     if ((jj_nt=token.next) == null)
       return (jj_ntk = (token.next=token_source.getNextToken()).kind);
     else
       return (jj_ntk = jj_nt.kind);
   }
 
-  static private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
-  static private int[] jj_expentry;
-  static private int jj_kind = -1;
+  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+  private int[] jj_expentry;
+  private int jj_kind = -1;
 
   /** Generate ParseException. */
-  static public ParseException generateParseException() {
+  public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[12];
+    boolean[] la1tokens = new boolean[13];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -301,7 +291,7 @@ public class ej1 implements ej1Constants {
         }
       }
     }
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 13; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -316,11 +306,11 @@ public class ej1 implements ej1Constants {
   }
 
   /** Enable tracing. */
-  static final public void enable_tracing() {
+  final public void enable_tracing() {
   }
 
   /** Disable tracing. */
-  static final public void disable_tracing() {
+  final public void disable_tracing() {
   }
 
 }

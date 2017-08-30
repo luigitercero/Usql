@@ -1,0 +1,15 @@
+<ob>
+	<nombre>hola</nombre>
+	<attr>
+		<int>hola</int>
+	</attr>
+</ob>
+
+
+
+<ob>
+	<nombre>andrea</nombre>
+	<attr>
+		<int>edad</int>
+	</attr>
+</ob>
