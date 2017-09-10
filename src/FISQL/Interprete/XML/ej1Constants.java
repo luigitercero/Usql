@@ -11,19 +11,21 @@ public interface ej1Constants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int abre = 6;
+  int abre = 1;
   /** RegularExpression Id. */
-  int cierra = 7;
+  int cierra = 2;
   /** RegularExpression Id. */
-  int slash = 8;
+  int slash = 3;
   /** RegularExpression Id. */
-  int id = 9;
+  int igual = 4;
   /** RegularExpression Id. */
-  int todo = 10;
+  int id = 5;
   /** RegularExpression Id. */
-  int num = 11;
+  int num = 6;
   /** RegularExpression Id. */
-  int script = 12;
+  int script = 7;
+  /** RegularExpression Id. */
+  int todo = 8;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -31,18 +33,19 @@ public interface ej1Constants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
+    "\"<\"",
+    "\">\"",
+    "\"</\"",
+    "\"=\"",
+    "<id>",
+    "<num>",
+    "<script>",
+    "<todo>",
     "\" \"",
     "\"\\n\"",
     "\"\\r\"",
     "\"\\r\\n\"",
     "\"\\t\"",
-    "\"<\"",
-    "\">\"",
-    "\"</\"",
-    "<id>",
-    "<todo>",
-    "<num>",
-    "<script>",
   };
 
 }

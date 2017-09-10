@@ -5,11 +5,13 @@
  */
 package FISQL;
 
+import FISQL.Interprete.XML.Atributo;
 import FISQL.Interprete.XML.Nodo;
 import FISQL.Interprete.XML.ParseException;
 import FISQL.Interprete.XML.ej1;
 import RegistroUseBD.RegistroDB;
 import RegistroUseBD.RegistroObjeto;
+import RegistroUseBD.RegistroProcedure;
 import RegistroUseBD.Rows;
 import RegistroUseBD.Tabla;
 import RegistroUseBD.Tipo;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -58,63 +61,63 @@ public class DBS {
     }
 
     public void cargarInformacionBD(Nodo nodo) throws FileNotFoundException, ParseException {
+      
         for (Nodo hijo : nodo.hijo) {
 
             switch (hijo.nombre) {
                 case "tabla":
+              
                     cargarInfoTabla(hijo);
                     break;
                 case "object":
                     cargarObjetos(hijo);
                     break;
                 case "procedure":
+                    cargarProcedimiento(hijo);
                     break;
                 default:
                     cargarInformacionBD(hijo);
-
             }
-
         }
-
     }
 
     private void cargarInfoTabla(Nodo nodo) {
         String nombre = null, path = null;
         ArrayList<Rows> row = null;
+        
+
         for (Nodo hijo : nodo.hijo) {
 
             switch (hijo.nombre) {
                 case "nombre":
-                    //System.out.println("nombre de tabla " + hijo.hijo.get(0).nombre);
-                    nombre = hijo.hijo.get(0).nombre;
+                    //System.out.println("nombre de tabla " + hijo.hijo.get(0).nombre);                    
+                    nombre = nombre(hijo);
                     break;
                 case "path":
                     //System.out.println("nombre de path " + hijo.hijo.get(0).nombre);
                     path = hijo.hijo.get(0).nombre;
                     break;
-
                 case "rows":
-                   // System.out.println("Cargar encabezado");
+                    // System.out.println("Cargar encabezado");
                     row = cargarROWS(hijo);
-//                    /System.out.println("cargar encabezado");
+                  
+
                     break;
                 default:
                     cargarInfoTabla(hijo);
             }
         }
         DB.rTabla.add(new Tabla(nombre, path, row));
+        
     }
 
     private ArrayList cargarROWS(Nodo nodo) {
-
         ArrayList<Rows> row = new ArrayList<>();
         for (Nodo hijo : nodo.hijo) {
-            row.add(new Rows(hijo.nombre, hijo.hijo.get(0).nombre));
+            row.add(new Rows(hijo.nombre, nombre(hijo),hijo.atributo));
             //System.out.println("cargar tipo " + hijo.nombre);
-
         }
         return row;
-
     }
 
     private void cargarObjetos(Nodo hijo) throws FileNotFoundException, ParseException {
@@ -122,25 +125,23 @@ public class DBS {
         BufferedReader bf = new BufferedReader(new FileReader(hijo.hijo.get(0).hijo.get(0).nombre));
         ej1 analizador = new ej1(bf);
         nodo = analizador.Inicio();
-        cargarObjeto(nodo);
+        //cargarObjeto(nodo);
         //nodo.recorrerHijos();
+
         for (Nodo nodo1 : nodo.hijo) {
             cargarObjeto(nodo1);
-
         }
         //cargarInformacionBD(nodo);
-
     }
 
     private void cargarObjeto(Nodo nodo) {
-
-        String nombre = null;
-        HashMap<String, Tipo> atributo = null;
+        String nombre = "";
+      ArrayList<Tipo> atributo = null;
         for (Nodo nodo1 : nodo.hijo) {
             switch (nodo1.nombre) {
                 case "nombre":
-                    //System.out.println("esto es el nombre del objeto " + nodo1.hijo.get(0).nombre);
-                    nombre = nodo1.hijo.get(0).nombre;
+                    //System.out.println("esto es el nombre del objeto " + nodo1.hijo.get(0).nombre
+                    nombre = nombre(nodo1);
                     break;
                 case "attr":
                     atributo = cargarAtributo(nodo1);
@@ -149,17 +150,79 @@ public class DBS {
         }
         RegistroObjeto ro = new RegistroObjeto(nombre, atributo);
         DB.OBJ.put(nombre, ro);
+    }
+
+    private ArrayList <Tipo> cargarAtributo(Nodo nodo) {
+
+        ArrayList<Tipo> tipo = new ArrayList<>();
+        for (Nodo nodo1 : nodo.hijo) {
+            Tipo tip = new Tipo(nombre(nodo1), nodo1.nombre);
+            tipo.add(tip);
+        }
+        return tipo;
+    }
+
+    private String nombre(Nodo nodo) {
+        String nombre = "";
+        for (Nodo nodo1 : nodo.hijo) {
+            nombre = nombre + " " + nodo1.nombre;
+        }
+        return nombre;
+    }
+
+    public void MostrarDatosDB() {
+        for (Tabla tabla : DB.rTabla) {
+            System.out.println("tabla: " + tabla.nombre);
+        }
+
+        DB.OBJ.forEach((k, v) -> System.out.println("Objeto : " + k+"esqueleto objeto "+v.tipo.get(0) ));
+        
+        DB.Procedure.forEach((k, v) -> System.out.println("procedimiento : " + k+ "esqueleto de metodo "+v.metodo));
 
     }
 
-    private HashMap<String, Tipo> cargarAtributo(Nodo nodo) {
+    private void cargarProcedimiento(Nodo hijo) throws ParseException, FileNotFoundException {
+        Nodo nodo;
+        BufferedReader bf = new BufferedReader(new FileReader(hijo.hijo.get(0).hijo.get(0).nombre));
+        ej1 analizador = new ej1(bf);
+        nodo = analizador.Inicio();
+        //nodo.recorrerHijos();
 
-        HashMap<String, Tipo> tipo = new HashMap<>();
         for (Nodo nodo1 : nodo.hijo) {
-            Tipo tip = new Tipo(nodo1.hijo.get(0).nombre, nodo1.nombre);
-            tipo.put(nodo1.hijo.get(0).nombre, tip);
+            cargarProcedure(nodo1);
         }
-        return tipo;
+    }
+
+    private void cargarProcedure(Nodo nodo) {
+
+        String nombre = "";
+        ArrayList atributo = null;
+        String metodo = "";
+        for (Nodo nodo1 : nodo.hijo) {
+            switch (nodo1.nombre) {
+                case "nombre":
+                    //System.out.println("esto es el nombre del objeto " + nodo1.hijo.get(0).nombre
+                    nombre = nombre(nodo1);
+                    break;
+                case "params":
+                    atributo = cargarParametros(nodo1);
+                    break;
+                case "src":
+                    metodo= nombre(nodo1);
+                    break;
+            }
+        }
+        RegistroProcedure proc = new RegistroProcedure(nombre, atributo, metodo);
+        DB.Procedure.put(nombre, proc);
+    }
+
+    private ArrayList cargarParametros(Nodo nodo) {
+        ArrayList<Tipo> params = new ArrayList();
+        for (Nodo nodo1 : nodo.hijo) {
+            Tipo tip = new Tipo(nombre(nodo1), nodo1.nombre);
+            params.add(tip);
+        }
+        return params;
     }
 
 }

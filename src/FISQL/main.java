@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-
 import java.io.StringReader;
 
 /**
@@ -33,21 +32,30 @@ public class main {
         // TODO code application logic here
         
         
-        BufferedReader bf = new BufferedReader(new FileReader("BaseDedatos/Master.xml"));
-        ej1 analizador = new ej1( bf) ;
-        DBS dbs = new DBS(analizador.Inicio());
-         
-        dbs.useDB("prueba_uno");
-        
-       // System.out.println(dbs.getUseDB().DB.path);
-        
-        for (Tabla tabla : dbs.DB.rTabla) {
-         //   System.out.println(tabla.nombre);
-            for (Rows row : tabla.rows) {
-           //     System.out.println("    "+ row.nombre);
+        Thread tread = new Thread(){
+           public Conex c = new Conex();
+            @Override
+            public void run() {
+                super.run(); //To change body of generated methods, choose Tools | Templates.
+                while (true) {
+                 c.initServer();
+                    
+                }
+              
             }
-        }
+            
+        };
+        tread.start();
+       
+        BufferedReader bf = new BufferedReader(new FileReader("BaseDedatos/Master.xml"));
+        ej1 analizador = new ej1(bf);
+        DBS dbs = new DBS(analizador.Inicio());
+        dbs.useDB("prueba_uno");
+        // System.out.println(dbs.getUseDB().DB.path);
+
+        dbs.MostrarDatosDB();
         System.out.println("\u005ctAnalizador ha terminado.");
-        
+
     }
+
 }

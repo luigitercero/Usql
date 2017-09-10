@@ -1,0 +1,21 @@
+<proc>
+<nombre>procediimiento1</nombre>
+	<params>
+		<int>parametro1</int>
+		<int>parametro2</int>
+	</params>
+	<src>##imprimir("hola mundo");##</src>
+</proc>
+
+
+<proc>
+<nombre>procediimiento2</nombre>
+
+	<src>##imprimir("hola mundo");##</src>
+</proc>
+
+<proc>
+<nombre>procediimiento3</nombre>
+
+	<src>##imprimir("hola mundo");##</src>
+</proc>

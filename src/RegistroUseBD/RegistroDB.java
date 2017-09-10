@@ -25,10 +25,12 @@ public class RegistroDB {
         this.DB = null;
         this.rTabla = new ArrayList<>();
         this.OBJ = new HashMap<>();
+        this.Procedure = new HashMap<>();
       }
     public Master DB;
     public ArrayList<Tabla> rTabla;
     public HashMap<String,RegistroObjeto> OBJ;
+    public HashMap<String,RegistroProcedure> Procedure;
     
     
 }

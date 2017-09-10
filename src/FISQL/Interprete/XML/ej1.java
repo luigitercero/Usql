@@ -35,13 +35,13 @@ public class ej1 implements ej1Constants {
   }
 
   final public Nodo cod() throws ParseException {
-            String abre,cierra; Nodo hijo;
+            Nodo abre;String cierra; Nodo hijo;
     //abre codhtml cierra
     abre = Abre();
-              hijo = new Nodo(abre);
+              hijo = abre;
     Codhtml(hijo);
     cierra = Cierra();
-                                                                      {if (true) return hijo;}
+                                                            {if (true) return hijo;}
     throw new Error("Missing return statement in function");
   }
 
@@ -77,9 +77,9 @@ public class ej1 implements ej1Constants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case abre:
     case id:
-    case todo:
     case num:
     case script:
+    case todo:
       //Codhtmlp-> Palabra Codhtmlp.
               //Codhtmlp-> .
               hijo = Palabra();
@@ -127,12 +127,14 @@ public class ej1 implements ej1Constants {
     throw new Error("Missing return statement in function");
   }
 
-  final public String Abre() throws ParseException {
-               Token Id;
+  final public Nodo Abre() throws ParseException {
+             Nodo hijo;Token Id;
     jj_consume_token(abre);
     Id = jj_consume_token(id);
+                          hijo = new Nodo(Id.image);
+    atributo(hijo);
     jj_consume_token(cierra);
-                                 {if (true) return Id.image;}
+                                                                            {if (true) return hijo;}
     throw new Error("Missing return statement in function");
   }
 
@@ -145,6 +147,22 @@ public class ej1 implements ej1Constants {
     throw new Error("Missing return statement in function");
   }
 
+  final public void atributo(Nodo padre) throws ParseException {
+                           Nodo nodo; Token atr1, valor;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case id:
+      atr1 = jj_consume_token(id);
+      jj_consume_token(igual);
+      valor = jj_consume_token(id);
+      atributo(padre);
+      padre.atributo.add(new Atributo(atr1.image,valor.image));
+      break;
+    default:
+      jj_la1[3] = jj_gen;
+      {if (true) return;}
+    }
+  }
+
   /** Generated Token Manager. */
   public ej1TokenManager token_source;
   SimpleCharStream jj_input_stream;
@@ -154,13 +172,13 @@ public class ej1 implements ej1Constants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[3];
+  final private int[] jj_la1 = new int[4];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x40,0x1e40,0x1e40,};
+      jj_la1_0 = new int[] {0x2,0x1e2,0x1e2,0x20,};
    }
 
   /** Constructor with InputStream. */
@@ -174,7 +192,7 @@ public class ej1 implements ej1Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -188,7 +206,7 @@ public class ej1 implements ej1Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -198,7 +216,7 @@ public class ej1 implements ej1Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -208,7 +226,7 @@ public class ej1 implements ej1Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -217,7 +235,7 @@ public class ej1 implements ej1Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -226,7 +244,7 @@ public class ej1 implements ej1Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 3; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -277,12 +295,12 @@ public class ej1 implements ej1Constants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[13];
+    boolean[] la1tokens = new boolean[14];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -291,7 +309,7 @@ public class ej1 implements ej1Constants {
         }
       }
     }
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 14; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

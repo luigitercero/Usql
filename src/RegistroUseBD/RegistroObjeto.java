@@ -15,9 +15,9 @@ import java.util.HashMap;
 public class RegistroObjeto {
    public String nombre;
 
-   public HashMap<String,Tipo> tipo;
+   public ArrayList<Tipo> tipo;
 
-    public RegistroObjeto(String nombre,  HashMap<String,Tipo>  tipo) {
+    public RegistroObjeto(String nombre,  ArrayList<Tipo>  tipo) {
         this.nombre = nombre;
         this.tipo = tipo;
     }

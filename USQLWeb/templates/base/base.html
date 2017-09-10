@@ -1,0 +1,43 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{%block titulo%}titulo{%endblock%}</title>
+    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+      body { display: flex; min-height: 100vh; flex-direction: column; }
+      main { flex: 1 0 auto; }
+    </style>    
+ 
+
+</head>
+<body> 
+    {% block header %}
+    {% include 'base/header.html' %}
+    {% endblock %}
+    {% include 'base/aside.html' %}
+    {% include 'base/areaTrabajo.html' %}
+
+    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+    <script src="{% static 'carrete/src/jquery.caret.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            //$('.scrollspy').scrollSpy();
+           // $(".button-collapse").sideNav();//este dolar sirve para buscar variables o clases #id puntito son clases
+            //inicializadorClaus();
+            $('.tooltipped').tooltip({delay: 50});
+            
+        });                      
+    </script>
+
+</body>
+</html>

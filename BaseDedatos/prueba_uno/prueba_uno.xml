@@ -3,15 +3,16 @@
 <object>
 	<path>BaseDedatos/prueba_uno/Objeto</path>
 </object>
-
-
+<procedure>
+	<path>BaseDedatos/prueba_uno/Procedure</path>
+</procedure>
 
 
 <tabla>
-	<nombre>hombre</nombre>
+	<nombre >hombresito</nombre>
 	<path>BaseDedatos/prueba_uno/Tabla</path>
 	<rows>
-		<text>nombre</text>
+		<text pk = true>nombre</text>
 		<int>edad</int>
 	</rows>
 </tabla>

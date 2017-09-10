@@ -78,10 +78,10 @@ public Nodo Inicio() :{Nodo padre,hijo;}
 }
 
 
-Nodo cod():{String abre,cierra; Nodo hijo;}
+Nodo cod():{Nodo abre;String cierra; Nodo hijo;}
 {
 //abre codhtml cierra
-abre = Abre(){hijo = new Nodo(abre);} Codhtml(hijo) cierra = Cierra(){return hijo;}
+abre = Abre(){hijo = abre;} Codhtml(hijo) cierra = Cierra(){return hijo;}
 }
 
 void codp(Nodo padre):{Nodo hijo;}
@@ -121,9 +121,10 @@ Nodo Palabra():{Token token; String dato;Nodo hijo;}
 	|token = <num>{return new Nodo (token.image,token);}
 	|hijo = cod(){return hijo;}
         |token = <script>{return new Nodo (token.image,token);}
+       
 }
-String Abre():{Token Id;}{
-	<abre> Id = <id><cierra>{return Id.image;}
+Nodo Abre():{Nodo hijo;Token Id;}{
+	<abre> Id = <id> {hijo = new Nodo(Id.image);}atributo(hijo)<cierra>{return hijo;}
 }
 
 String Cierra():{Token Id;}
@@ -131,23 +132,32 @@ String Cierra():{Token Id;}
 	<slash> Id = <id><cierra>{return Id.image;}
 }
 
-
-SKIP : 
-{ 
-	" "|"\n" | "\r" | "\r\n" | "\t"
+void atributo(Nodo padre):{Nodo nodo; Token atr1, valor; }{
+    atr1 = <id><igual> valor = <id>  atributo(padre){padre.atributo.add(new Atributo(atr1.image,valor.image));}
+    |{return;}
 }
+
+
+
+
+
+
 
 TOKEN : 
 { 
  <abre :"<">{} 
 |<cierra :">"> {}
 |<slash:"</">{}
-|<id :["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9","_"])*>{} 
-|<todo :(~["<",">","\t","\r","\n"])+>{}
+|<igual: "=">{}
+|<id :["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9","_"])*>
 |<num:["0"-"9"](["0"-"9"])*>{}
-|<script :"##"(~["#"] )+"##">{}
+|<script :"##"(~["#"])*"##">{}
+|<todo :(~["<",">","\t","\r","\n"," ", "="])+>{}
+}
 
-
+SKIP : 
+{ 
+	" "|"\n" | "\r" | "\r\n" | "\t"
 }
 
 
